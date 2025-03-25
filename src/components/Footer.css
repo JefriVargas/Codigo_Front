@@ -1,0 +1,26 @@
+/* src/components/Footer.css */
+.footer {
+  background-color: #000;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px 16px;
+  width: 100%;
+  box-sizing: border-box;  /* Asegura que padding se incluya en el ancho total */
+  max-width: 100%;         /* Previene exceder la pantalla en casos especiales */
+  overflow-x: hidden;      /* Opcional, evita scroll horizontal */
+}
+
+
+.footer-icon {
+  width: 24px;
+  height: 24px;
+  margin-left: 16px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.footer-icon:hover {
+  opacity: 0.8;
+}

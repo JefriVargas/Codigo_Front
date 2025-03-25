@@ -1,0 +1,212 @@
+/* src/Contact.css */
+
+.contact-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .contact-main {
+    flex: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .contact-title {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    color: #000;
+    margin-bottom: 10px;
+  }
+  
+  .contact-subtext {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .label-bold {
+    font-size: 14px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 4px;
+    text-align: left;
+  }
+  
+  .single-line-input,
+  .multiline-input {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px;
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+  
+  .multiline-input {
+    min-height: 80px;
+    resize: vertical; /* Permite al usuario redimensionar verticalmente */
+  }
+  
+  /* Fila para Teléfono, Talla, Precio */
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  
+  .form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Cuadro punteado para la imagen */
+  .upload-container {
+    width: 100%;
+    min-height: 200px;
+    border: 2px dashed #999;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .upload-label {
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  .upload-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+    object-fit: contain;
+  }
+  
+  .bold-text {
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  
+  .browse-text {
+    color: #007AFF;
+    cursor: pointer;
+  }
+  
+  .small-text {
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+  }
+  
+  .selected-image {
+    height: 150px;
+    object-fit: contain;
+  }
+
+  .image-preview {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Botón de Enviar */
+  .submit-row {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .send-button {
+    background-color: #007BFF;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    cursor: pointer;
+  }
+  
+  .send-button.disabled {
+    background-color: #9CCAFB;
+    cursor: not-allowed;
+  }
+
+  /* Botón “X” para cerrar */
+.close-image-button {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 16px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-image-button:hover {
+  background: rgba(0,0,0,0.8);
+}
+
+/* SnakBar: Estilo emergente en la parte inferior */
+.snackbar2 {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(8, 220, 26, 0.9);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  z-index: 10000;
+  max-width: 80%;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Overlay "Enviando..." */
+.loading-overlay {
+  position: fixed;
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* no bloquea la interacción */
+}
+
+.loading-message {
+  background: #fff;
+  padding: 16px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
