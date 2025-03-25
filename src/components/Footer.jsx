@@ -5,7 +5,7 @@ import './Footer.css'; // Archivo de estilos CSS
 export default function Footer() {
   return (
     <div className="footer">
-      <a href="https://www.tiktok.com/@max_cs_" target="_blank" rel="noopener noreferrer">
+      <a href="https://www.tiktok.com/@tuestilo__" target="_blank" rel="noopener noreferrer">
         <img 
           src="/images/tiktok.png" 
           className="footer-icon" 

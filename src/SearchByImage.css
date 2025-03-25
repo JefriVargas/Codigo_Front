@@ -271,3 +271,101 @@
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+/* Contenedor general */
+.guidelines-container {
+  width: 90%;
+  max-width: 800px; /* Ajusta si quieres */
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Fila 1: Título a la izquierda, texto a la derecha */
+.guidelines-row {
+  display: flex;
+  flex-wrap: wrap; /* Para adaptarse en pantallas pequeñas */
+  gap: 10px;
+  align-items: flex-start;
+}
+
+/* Título a la izquierda */
+.guidelines-title {
+  /* Eliminamos min-width y dejamos que ocupe el espacio necesario */
+  flex: none; 
+  /* opcionalmente, un pequeño margen derecha para separarse del texto */
+  margin-right: 20px; 
+}
+
+/* Texto a la derecha */
+.guidelines-text {
+  flex: 2;
+  min-width: 300px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Fila 2: 6 imágenes (3 buenas, 3 malas) */
+.guidelines-examples-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+/* Cada imagen */
+.guidelines-example {
+  width: 80px; /* Ajusta tamaño */
+  height: 80px;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.guidelines-example img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Ejemplo: “good” => un icono check superpuesto */
+.guidelines-example.good::after {
+  content: '✓';
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #4CAF50; /* verde */
+  color: #fff;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ejemplo: “bad” => un icono X superpuesto */
+.guidelines-example.bad::after {
+  content: '✕';
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #f44336; /* rojo */
+  color: #fff;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive: si la pantalla es muy pequeña, el texto y el título se apilen */
+@media (max-width: 600px) {
+  .guidelines-row {
+    flex-direction: column;
+  }
+}

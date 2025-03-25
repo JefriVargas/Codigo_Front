@@ -7,6 +7,7 @@ import './SearchByImage.css';
 export default function SearchByImage() {
   const navigate = useNavigate();
 
+  const [isDragging, setIsDragging] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [fileObj, setFileObj] = useState(null);
 
@@ -62,9 +63,12 @@ export default function SearchByImage() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('http://89.116.214.23:8000/search', {
+      const response = await fetch('https://api.tuestilo.xyz/search', {
         method: 'POST',
         body: formData,
+        headers: {
+          // No incluir Content-Type aquí porque es multipart/form-data
+      },
       });
 
       if (!response.ok) throw new Error('Error del servidor');
@@ -74,7 +78,7 @@ export default function SearchByImage() {
       if (data.results && data.results.length > 0) {
         let filtered = data.results;
         if (filtered.length > 1) {
-          filtered = filtered.slice(1);
+          filtered = filtered.slice(0);
         }
 
         setSearchResults(filtered);
@@ -101,7 +105,42 @@ export default function SearchByImage() {
       };
       reader.readAsDataURL(file);
 
+      toBase64(file);
       setFileObj(file);
+    }
+  };
+
+  // Convertir File -> base64
+  const toBase64 = (file) => {
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      setSelectedImage(evt.target.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // DRAG & DROP
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const file = e.dataTransfer.files[0];
+      toBase64(file);
+      setFileObj(file);
+      // Limpia dataTransfer
+      e.dataTransfer.clearData();
     }
   };
 
@@ -147,7 +186,17 @@ export default function SearchByImage() {
       <div className="main-content">
         <h1 className="main-title">Encuentra tu producto con una Foto</h1>
 
-        <div className="upload-container">
+        <div className="upload-container"
+        // Asignamos los eventos de drag & drop
+        onDragOver={handleDragOver}
+        onDragEnter={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        style={{
+          borderColor: isDragging ? 'blue' : '#999', 
+          // algún estilo condicional para indicar hover
+        }}
+      >
           {!selectedImage ? (
             <label className="upload-label">
               <input
@@ -176,6 +225,51 @@ export default function SearchByImage() {
           )}
         </div>
 
+        <div className="guidelines-container">
+          {/* Fila 1: Título a la izquierda, texto a la derecha */}
+          <div className="guidelines-row">
+            <div className="guidelines-title">
+              <p>
+              <strong>Requisitos para<br/>cargar<br/>imágenes:</strong>
+              </p>
+            </div>
+            <div className="guidelines-text">
+              <p> El tamaño debe ser inferior a 10 MB, el lado más largo de la imagen debe ser menor de 4000px<br/>
+              Las fotos de ropa deben ser planas y sin obstrucciones. No se admiten imágenes con múltiples artículos, prendas dobladas u obstruidas, vistas no frontales, fotos de modelos ni fotos de maniquíes.</p>
+            </div>
+          </div>
+
+          {/* Fila 2: Ejemplos de imágenes (3 buenas y 3 malas) */}
+          <div className="guidelines-examples-row">
+          <div className="guidelines-title">
+          <p>
+              <strong>Ejemplo de<br/>imagen subida:</strong>
+              </p>
+            </div>
+            {/* Ejemplo: 3 "buenas" */}
+            <div className="guidelines-example good">
+              <img src="/images/Correcto1.jpg" alt="Buena imagen 1" />
+            </div>
+            <div className="guidelines-example good">
+              <img src="/images/Correcto2.jpg" alt="Buena imagen 2" />
+            </div>
+            <div className="guidelines-example good">
+              <img src="/images/Correcto3.jpg" alt="Buena imagen 3" />
+            </div>
+
+            {/* Ejemplo: 3 "malas" */}
+            <div className="guidelines-example bad">
+              <img src="/images/Incorrecto1.jpg" alt="Mala imagen 1" />
+            </div>
+            <div className="guidelines-example bad">
+              <img src="/images/Incorrecto2.jpg" alt="Mala imagen 2" />
+            </div>
+            <div className="guidelines-example bad">
+              <img src="/images/Incorrecto3.jpg" alt="Mala imagen 3" />
+            </div>
+          </div>
+        </div>
+
         <div className="button-row">
           <button className="action-button" onClick={handleBuscar}>
             BUSCAR
@@ -202,7 +296,7 @@ export default function SearchByImage() {
                     onClick={() => openModalForItem(item)}
                   >
                     <img
-                      src={`http://89.116.214.23:8000${item.image_url}`}
+                      src={`https://api.tuestilo.xyz${item.image_url}`}
                       alt="Prenda"
                       className="card-image"
                     />
@@ -240,7 +334,7 @@ export default function SearchByImage() {
               ×
             </button>
             <img
-              src={`http://89.116.214.23:8000${selectedProduct.image_url}`}
+              src={`https://api.tuestilo.xyz${selectedProduct.image_url}`}
               alt="Prenda grande"
               className="modal-big-image"
             />

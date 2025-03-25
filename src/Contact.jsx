@@ -30,6 +30,7 @@ export default function Contact() {
   const [detalleAdicional, setDetalleAdicional] = useState('');
 
   // Imagen
+  const [isDragging, setIsDragging] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [fileObj, setFileObj] = useState(null);
 
@@ -69,7 +70,42 @@ export default function Contact() {
         setSelectedImage(event.target.result);
       };
       reader.readAsDataURL(file);
+      toBase64(file);
       setFileObj(file);
+    }
+  };
+
+  // Convertir File -> base64
+  const toBase64 = (file) => {
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      setSelectedImage(evt.target.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // DRAG & DROP
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const file = e.dataTransfer.files[0];
+      toBase64(file);
+      setFileObj(file);
+      // Limpia dataTransfer
+      e.dataTransfer.clearData();
     }
   };
 
@@ -104,7 +140,7 @@ export default function Contact() {
         formData.append('image', finalFile);
       }
 
-      const response = await fetch('http://89.116.214.23:8000/contact', {
+      const response = await fetch('https://api.tuestilo.xyz/contact', {
         method: 'POST',
         body: formData,
       });
@@ -147,7 +183,7 @@ export default function Contact() {
         <input
           className="single-line-input"
           type="text"
-          placeholder="Tu nombre"
+          placeholder="Jose Luis"
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
         />
@@ -158,7 +194,7 @@ export default function Contact() {
             <input
               className="single-line-input"
               type="tel"
-              placeholder="999999999"
+              placeholder="+51 984 193 485"
               value={telefono}
               onChange={(e) => setTelefono(e.target.value)}
             />
@@ -168,14 +204,24 @@ export default function Contact() {
         <label className="label-bold">Algún detalle adicional</label>
         <textarea
           className="multiline-input"
-          placeholder="Escribe detalles extra..."
+          placeholder="Mensajes..."
           value={detalleAdicional}
           onChange={(e) => setDetalleAdicional(e.target.value)}
         />
 
         {/* Imagen */}
         <label className="label-bold">Imagen</label>
-        <div className="upload-container">
+        <div className="upload-container"
+        // Asignamos los eventos de drag & drop
+        onDragOver={handleDragOver}
+        onDragEnter={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        style={{
+          borderColor: isDragging ? 'blue' : '#999', 
+          // algún estilo condicional para indicar hover
+        }}
+      >
           {!selectedImage ? (
             <label className="upload-label">
               <input
